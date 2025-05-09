@@ -1,4 +1,4 @@
-#' @useDynLib fuse, .registration = TRUE
+#' @useDynLib fuseR, .registration = TRUE
 NULL
 
 #' Perform Hierarchical Clustering on Methylation Data
