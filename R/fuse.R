@@ -84,7 +84,7 @@ fuse.sort.tree <- function(tree) {
 #' @param k Number of clusters
 #' @return A vector indicating which cluster each element in the original data frame belonged to
 #' @examples
-#' # Example 1: Cutting small tree in 2 segments
+#' # Example: Cutting small tree in 2 segments
 #' tree <- matrix(c(
 #' -1, -2,  49.53106,  49.53106,  1.14473,
 #' -3, -4,  78.49604,  78.49604,  1.14473,
@@ -95,25 +95,6 @@ fuse.sort.tree <- function(tree) {
 #'
 #' segments <- fuse.cutree(tree, 2)
 #' segments
-#'
-#' # Example 2: Cut tree based on Bayesian Information Criterion (BIC)
-#' K0 <- matrix(sample(c(1:200), 500, replace = TRUE), ncol = 5)
-#' K1 <- matrix(sample(c(1:200), 500, replace = TRUE), ncol = 5)
-#' tree <- fuse.cluster(K0, K1)
-#' tree
-#'
-#' k <- c(nrow(tree):1)
-#' m <- nrow(K0)
-#' n <- ncol(K0)
-#' bic <- numeric(nrow(tree))
-#'
-#' # Computing BIC for every possible number of segments
-#' for(i in 1:nrow(tree)) {
-#'   bic[i] <- n*log(m*n)*k[i] + 2*tree[i, 4]
-#' }
-#' plot(bic)
-#' number_of_segments <- length(bic) - (which.min(bic)-1)
-#' segments <- fuse.cutree(tree, number_of_segments)
 #'
 #' @export
 fuse.cutree <- function (tree, k) {
