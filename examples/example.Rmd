@@ -23,8 +23,8 @@ We start by reading in the data, which consist of the tables K0 and K1. Both hav
 This is a dummy data set consisting of the 100 000 first CpG sites in chromosome 20. 
 
 ```{r}
-k0 <- read.table('k0.tsv', header = T, row.names = 1)
-k1 <- read.table('k1.tsv', header = T, row.names = 1)
+k0 <- read.table(gzfile('k0.tsv'), header = T, row.names = 1)
+k1 <- read.table(gzfile('k1.tsv'), header = T, row.names = 1)
 
 head(k0)
 ```
