@@ -20,11 +20,11 @@ We start by reading in the data, which consist of the tables K0 and K1. Both hav
 - K0 contains the unmethylated counts
 - K1 contains the methylated counts
 
+This is a dummy data set consisting of the 100 000 first CpG sites in chromosome 20. 
+
 ```{r}
-k0 <- read.table('../../methylation/manuscript/simulated_dataset/data/k0_0.75.tsv', header = T, row.names = 1)
-k1 <- read.table('../../methylation/manuscript/simulated_dataset/data/k1_0.75.tsv', header = T, row.names = 1)
-#k0 <- read.table('k0.tsv', header = T, row.names = 1)
-#k1 <- read.table('k1.tsv', header = T, row.names = 1)
+k0 <- read.table('k0.tsv', header = T, row.names = 1)
+k1 <- read.table('k1.tsv', header = T, row.names = 1)
 
 head(k0)
 ```
