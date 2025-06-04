@@ -2,7 +2,7 @@
 title: "Example workflow using FUSE"
 author: "Susanna Holmstrom"
 date: "2025-05-12"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
