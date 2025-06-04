@@ -54,7 +54,6 @@ double
 nLLR(const data_elem_t *LHC, const data_elem_t *RHC, double LOGL_LHC, double LOGL_RHC, size_t num_of_samples) {
 	size_t j;
 	double logl = 0;
-	//printf("Computing new distance\n");
 	// Looping trough LHC and RHC to compute combined likelihoood
 	for( j = 0; j < num_of_samples; ++j) {
 		logl += cost((is_na_double(LHC[j].k0) ? 0 : LHC[j].k0) + (is_na_double(RHC[j].k0) ? 0 : RHC[j].k0),

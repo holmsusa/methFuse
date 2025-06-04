@@ -100,7 +100,6 @@ fuse_cluster_R(SEXP K0_R, SEXP K1_R, SEXP CHR_R, SEXP POS_R)
         }
     }
 
-    
     /* Call core clustering function */
     fuse_cluster(REAL(tree_R), counts, INTEGER(CHR_R), INTEGER(POS_R), nrow, ncol);
 

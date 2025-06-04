@@ -18,7 +18,7 @@ A vector indicating which cluster each element in the original data frame belong
 Divides the clustering tree into a specified number of clusters.
 }
 \examples{
-# Example: Cutting small tree in 2 segments
+# Example 1: Cutting small tree in 2 segments
 tree <- matrix(c(
 -1, -2,  49.53106,  49.53106,  1.14473,
 -3, -4,  78.49604,  78.49604,  1.14473,
