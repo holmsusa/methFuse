@@ -1,10 +1,10 @@
 /**
  * @file fuse.c
  * @brief Implementation of R-C interface functions.
- * 
- * This file contains functions that take in R variables and return R variables, 
+ *
+ * This file contains functions that take in R variables and return R variables,
  * but are implemented in C.
- * The functions in this file are for clustering, sorting trees, cutting trees, 
+ * The functions in this file are for clustering, sorting trees, cutting trees,
  * and computing Pearson correlation row sums in an R environment.
  */
 
@@ -17,7 +17,7 @@
 
 /**
  * @brief Checks if the given SEXP argument is a 2D structure.
- * 
+ *
  * @param arg An R object to check.
  * @return int Returns nonzero if the argument is a vector or matrix, otherwise 0.
  */
@@ -30,14 +30,14 @@ is2D(SEXP arg)
 
 /**
  * @brief Sorts a tree structure in R.
- * 
+ *
  * @param tree_R Input matrix representing the tree structure.
  * @return SEXP A newly allocated matrix with the sorted tree.
  */
 SEXP
 sort_tree_R(SEXP tree_R)
 {
-	SEXP tree_sorted_R ; 
+	SEXP tree_sorted_R ;
 	size_t nrow;
 	double *scratch; // Scratch memory
 
@@ -55,7 +55,7 @@ sort_tree_R(SEXP tree_R)
 
 /**
  * @brief Performs hierarchical clustering on input matrices.
- * 
+ *
  * @param K0_R Integer matrix representing the unmethylated counts.
  * @param K1_R Integer matrix representing the methylated counts.
  * @param CHR_R Integer vector of chromosome identifiers.
@@ -67,7 +67,7 @@ sort_tree_R(SEXP tree_R)
  * 			4. Total cost of merge
  * 			5. Genomic distance between points
  */
-SEXP 
+SEXP
 fuse_cluster_R(SEXP K0_R, SEXP K1_R, SEXP CHR_R, SEXP POS_R)
 {
     int nrow = nrows(K0_R);
@@ -130,30 +130,30 @@ fuse_cluster_R(SEXP K0_R, SEXP K1_R, SEXP CHR_R, SEXP POS_R)
 
 /**
  * @brief Cuts a hierarchical tree into clusters.
- * 
+ *
  * @param tree_R Input matrix representing the tree structure.
  * @param num_of_clust_R Number of clusters.
  * @return SEXP A vector of cluster labels.
  */
 SEXP
-cuttree_R(SEXP tree_R, SEXP num_of_clust_R) 
+cuttree_R(SEXP tree_R, SEXP num_of_clust_R)
 {
 	size_t *labels, num_of_clust, num_of_points;
 	SEXP labels_R;
 
 	/* Dimensions */
-	num_of_points = nrows(tree_R) + 1.; // It takes n steps to merge n+1 points 
+	num_of_points = nrows(tree_R) + 1.; // It takes n steps to merge n+1 points
 	num_of_clust = (size_t) INTEGER(num_of_clust_R)[0];
-	
+
 	/* Allocate memory */
 	labels_R = PROTECT(allocVector(INTSXP, num_of_points));
 	labels = (size_t*)R_alloc(sizeof(*labels), 2*num_of_points);
 
 	/* Cut tree */
-	cutree(labels, REAL(tree_R), num_of_clust, num_of_points); 
+	cutree(labels, REAL(tree_R), num_of_clust, num_of_points);
 
 	/* Copy into output vector */
-	for(size_t i = 0; i < num_of_points; ++i) { 
+	for(size_t i = 0; i < num_of_points; ++i) {
 		INTEGER(labels_R)[i] = (int)labels[i] + 1; // C labels start from 0, R labels from 1
 	}
 
@@ -161,6 +161,100 @@ cuttree_R(SEXP tree_R, SEXP num_of_clust_R)
 	return labels_R;
 }
 
+
+/**
+ * @brief Element-wise safe division (R interface)
+ *
+ * @param x_R Numeric vector or matrix numerator
+ * @param y_R Numeric vector or matrix denominator
+ * @return Numeric vector or matrix of same size as input
+ */
+SEXP bino_div_R(SEXP x_R, SEXP y_R) {
+  if (!isReal(x_R) && !isInteger(x_R))
+    error("x must be numeric or integer");
+  if (!isReal(y_R) && !isInteger(y_R))
+    error("y must be numeric or integer");
+
+  R_xlen_t n = XLENGTH(x_R);
+  if (XLENGTH(y_R) != n)
+    error("Input lengths must match");
+
+  /* Preserve dimensions if input is a matrix */
+  SEXP dims = getAttrib(x_R, R_DimSymbol);
+
+  SEXP out_R = PROTECT(allocVector(REALSXP, n));
+  if (dims != R_NilValue) setAttrib(out_R, R_DimSymbol, dims);
+  double *out = REAL(out_R);
+
+  if (isInteger(x_R) && isInteger(y_R)) {
+    int *x = INTEGER(x_R);
+    int *y = INTEGER(y_R);
+    for (R_xlen_t i = 0; i < n; i++)
+      out[i] = bino_div_id(x[i], (double)y[i]);
+  } else if (isInteger(x_R) && isReal(y_R)) {
+    int *x = INTEGER(x_R);
+    double *y = REAL(y_R);
+    for (R_xlen_t i = 0; i < n; i++)
+      out[i] = bino_div_id(x[i], y[i]);
+  } else if (isReal(x_R) && isReal(y_R)) {
+    double *x = REAL(x_R);
+    double *y = REAL(y_R);
+    for (R_xlen_t i = 0; i < n; i++)
+      out[i] = bino_div(x[i], y[i]);
+  } else {
+    error("Unsupported combination of types for bino_div_R");
+  }
+
+  UNPROTECT(1);
+  return out_R;
+}
+
+/**
+ * @brief Element-wise x * log(y) with safe handling (R interface)
+ *
+ * @param x_R Numeric vector or matrix
+ * @param y_R Numeric vector or matrix
+ * @return Numeric vector or matrix of same size as input
+ */
+SEXP bino_xlogy_R(SEXP x_R, SEXP y_R) {
+  if (!isReal(x_R) && !isInteger(x_R))
+    error("x must be numeric or integer");
+  if (!isReal(y_R) && !isInteger(y_R))
+    error("y must be numeric or integer");
+
+  R_xlen_t n = XLENGTH(x_R);
+  if (XLENGTH(y_R) != n)
+    error("Input lengths must match");
+
+  /* Preserve dimensions if input is a matrix */
+  SEXP dims = getAttrib(x_R, R_DimSymbol);
+
+  SEXP out_R = PROTECT(allocVector(REALSXP, n));
+  if (dims != R_NilValue) setAttrib(out_R, R_DimSymbol, dims);
+  double *out = REAL(out_R);
+
+  if (isInteger(x_R) && isInteger(y_R)) {
+    int *x = INTEGER(x_R);
+    int *y = INTEGER(y_R);
+    for (R_xlen_t i = 0; i < n; i++)
+      out[i] = bino_xlogy_id(x[i], (double)y[i]);
+  } else if (isInteger(x_R) && isReal(y_R)) {
+    int *x = INTEGER(x_R);
+    double *y = REAL(y_R);
+    for (R_xlen_t i = 0; i < n; i++)
+      out[i] = bino_xlogy_id(x[i], y[i]);
+  } else if (isReal(x_R) && isReal(y_R)) {
+    double *x = REAL(x_R);
+    double *y = REAL(y_R);
+    for (R_xlen_t i = 0; i < n; i++)
+      out[i] = bino_xlogy(x[i], y[i]);
+  } else {
+    error("Unsupported combination of types for bino_xlogy_R");
+  }
+
+  UNPROTECT(1);
+  return out_R;
+}
 
 
 
