@@ -8,7 +8,7 @@ NULL
 #' Determines the optimal number of clusters to cut a hierarchical clustering tree,
 #' based on the selected information criterion (e.g., BIC or AIC).
 #'
-#' @param tree A sorted clustering tree (matrix or data.frame).
+#' @param tree Clustering tree (matrix or data.frame).
 #' @param n Number of samples in the original data.
 #' @param method Information criterion method. One of `"BIC"` or `"AIC"`.
 #'
@@ -17,9 +17,17 @@ NULL
 #'
 #' @examples
 #' # Example: Determine number of clusters in dummy data set
-#' K0 <- matrix(sample(1:200, 80, replace = TRUE), ncol = 5)
-#' K1 <- matrix(sample(1:200, 80, replace = TRUE), ncol = 5)
-#' tree <- fuse.cluster(K0, K1, sort = TRUE)
+#' set.seed(1234)
+#' K0 <- matrix(
+#'   rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
+#' K1 <- matrix(
+#'   rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
+#' tree <- fuse.cluster(K0, K1)
+#' tree[,3] <- cumsum(tree[,3]) # Total likelihood of model
 #' k <- number.of.clusters(tree, ncol(K0), 'BIC')
 #' k
 #'
@@ -67,7 +75,7 @@ number.of.clusters <- function(tree, n, method = c("BIC", "AIC")) {
 #' Cut Hierarchical Clustering Tree into Clusters
 #'
 #' @description Divides the clustering tree into a specified number of clusters.
-#' @param tree Sorted clustering tree
+#' @param tree Clustering tree
 #' @param k Number of clusters
 #' @return A vector indicating which cluster each element in the original data frame belonged to
 #' @examples
@@ -80,7 +88,7 @@ number.of.clusters <- function(tree, n, method = c("BIC", "AIC")) {
 #' 4,  3, 106.38879, 454.47029,  1.14473
 #' ), ncol = 5, byrow = TRUE)
 #'
-#' segments <- fuse.cutree(tree, 2)
+#' segments <- fuse.cut.tree(tree, 2)
 #' segments
 #'
 #' @export

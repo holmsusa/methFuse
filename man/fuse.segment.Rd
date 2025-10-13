@@ -4,7 +4,7 @@
 \alias{fuse.segment}
 \title{Full FUSE Segmentation Pipeline}
 \usage{
-fuse.segment(K0, K1, chr, pos, method = c("BIC", "AIC"), sort = TRUE)
+fuse.segment(K0, K1, chr, pos, method = c("BIC", "AIC"))
 }
 \arguments{
 \item{K0}{Integer or numeric matrix of unmethylated counts.}
@@ -17,8 +17,6 @@ fuse.segment(K0, K1, chr, pos, method = c("BIC", "AIC"), sort = TRUE)
 
 \item{method}{Information criterion to use for determining optimal clusters.
 One of \code{"BIC"} or \code{"AIC"}. Defaults to \code{"BIC"}.}
-
-\item{sort}{Logical; whether to sort the clustering tree optimally. Defaults to TRUE.}
 }
 \value{
 A list with two elements (the same structure as \code{\link{fuse.summary}}):
@@ -42,12 +40,18 @@ This function combines the steps:
 }
 \examples{
 \donttest{
-K0 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
-K1 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
+set.seed(1234)
+K0 <- matrix(
+  rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
+K1 <- matrix(
+  rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
 chr <- rep("chr1", nrow(K0))
 pos <- 1:nrow(K0)
-
-res <- fuse_segment(K0, K1, chr, pos, method = "BIC")
+res <- fuse.segment(K0, K1, chr, pos, method = "BIC")
 head(res$summary)
 }
 

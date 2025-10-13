@@ -13,14 +13,3 @@ test_that("fuse.cluster returns matrix with correct column names", {
   )
 })
 
-# fuse.sort.tree
-test_that("fuse.sort.tree preserves matrix structure", {
-  K0 <- matrix(sample(1:100, 50, replace = TRUE), ncol = 5)
-  K1 <- matrix(sample(1:100, 50, replace = TRUE), ncol = 5)
-  tree <- fuse.cluster(K0, K1, sort = FALSE)
-
-  sorted <- fuse.sort.tree(tree)
-
-  expect_true(is.matrix(sorted))
-  expect_equal(dim(sorted), dim(tree))
-})

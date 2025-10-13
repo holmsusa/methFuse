@@ -7,15 +7,15 @@
 fuse.summary(K0, K1, chr, pos, segments)
 }
 \arguments{
-\item{K0}{Integer matrix of unmethylated counts.}
+\item{K0}{Integer or numeric matrix of unmethylated counts.}
 
-\item{K1}{Integer matrix of methylated counts.}
+\item{K1}{Integer or numeric matrix of methylated counts.}
 
 \item{chr}{Character vector giving the chromosome for each site.}
 
 \item{pos}{Numeric vector giving genomic coordinates for each site.}
 
-\item{segments}{Integer vector (length = nrow(K0)) giving segment IDs for each site.}
+\item{segments}{Integer vector giving segment IDs for each site in K0 and K1.}
 }
 \value{
 A list with two elements:
@@ -42,10 +42,17 @@ methylation (beta), and stability flag based on likelihood testing.
 Also returns per-sample methylation estimates for each segment.
 }
 \examples{
-K0 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
-K1 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
+set.seed(1234)
+K0 <- matrix(
+  rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
+K1 <- matrix(
+  rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
 tree <- fuse.cluster(K0, K1)
-segments <- fuse.cut.tree(tree, 40)
+segments <- fuse.cut.tree(tree, 4)
 res <- fuse.summary(K0, K1, rep("chr1", nrow(K0)), 1:nrow(K0), segments)
 head(res$summary)
 head(res$betas_per_segment)

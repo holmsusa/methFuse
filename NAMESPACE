@@ -3,7 +3,7 @@
 export(fuse.cluster)
 export(fuse.cut.tree)
 export(fuse.segment)
-export(fuse.sort.tree)
 export(fuse.summary)
 export(number.of.clusters)
+importFrom(stats,pchisq)
 useDynLib(fuseR, .registration = TRUE)

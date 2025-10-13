@@ -4,14 +4,12 @@
 \alias{fuse.cluster}
 \title{Perform Hierarchical Clustering on Methylation Data}
 \usage{
-fuse.cluster(K0, K1, sort = TRUE)
+fuse.cluster(K0, K1)
 }
 \arguments{
 \item{K0}{Integer or numeric matrix with unmethylated counts}
 
 \item{K1}{Integer or numeric matrix with methylated counts}
-
-\item{sort}{Default is true, sorts the tree in optimal order}
 }
 \value{
 Clustering tree as a matrix, with the same structure as hclust, including the columns
@@ -28,8 +26,15 @@ Produces a hierarchical clustering tree based on the input matrices of counts.
 }
 \examples{
 # Example: Clustering generated data
-K0 <- matrix(sample(c(1:200), 125, replace = TRUE), ncol = 5)
-K1 <- matrix(sample(c(1:200), 125, replace = TRUE), ncol = 5)
+set.seed(1234)
+K0 <- matrix(
+  rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
+K1 <- matrix(
+  rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
 tree <- fuse.cluster(K0, K1)
 tree
 

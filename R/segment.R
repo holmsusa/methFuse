@@ -22,7 +22,6 @@ NULL
 #' @param pos Numeric vector of genomic coordinates for each CpG site.
 #' @param method Information criterion to use for determining optimal clusters.
 #'   One of `"BIC"` or `"AIC"`. Defaults to `"BIC"`.
-#' @param sort Logical; whether to sort the clustering tree optimally. Defaults to TRUE.
 #'
 #' @return
 #' A list with two elements (the same structure as \code{\link{fuse.summary}}):
@@ -33,17 +32,23 @@ NULL
 #'
 #' @examples
 #' \donttest{
-#' K0 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
-#' K1 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
+#' set.seed(1234)
+#' K0 <- matrix(
+#'   rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
+#' K1 <- matrix(
+#'   rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
 #' chr <- rep("chr1", nrow(K0))
 #' pos <- 1:nrow(K0)
-#'
-#' res <- fuse_segment(K0, K1, chr, pos, method = "BIC")
+#' res <- fuse.segment(K0, K1, chr, pos, method = "BIC")
 #' head(res$summary)
 #' }
 #'
 #' @export
-fuse.segment <- function(K0, K1, chr, pos, method = c("BIC", "AIC"), sort = TRUE) {
+fuse.segment <- function(K0, K1, chr, pos, method = c("BIC", "AIC")) {
   # --- Input validation ---
   stopifnot(
     is.matrix(K0),
@@ -58,7 +63,7 @@ fuse.segment <- function(K0, K1, chr, pos, method = c("BIC", "AIC"), sort = TRUE
   method <- match.arg(method)
 
   # --- Step 1: Hierarchical clustering ---
-  tree <- fuse.cluster(K0, K1, sort = sort)
+  tree <- fuse.cluster(K0, K1)
 
   # --- Step 2: Determine optimal number of clusters ---
   # Need the total likelihood on each step, so the sum of the changes in total likelihood
@@ -74,7 +79,6 @@ fuse.segment <- function(K0, K1, chr, pos, method = c("BIC", "AIC"), sort = TRUE
   # Attach metadata for convenience
   attr(result, "k_opt") <- k_opt
   attr(result, "method") <- method
-  attr(result, "sorted") <- sort
 
   return(result)
 }

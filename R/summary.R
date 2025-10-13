@@ -1,6 +1,7 @@
 #' @useDynLib fuseR, .registration = TRUE
 NULL
 
+#'
 #' Summarize FUSE Segmentation Results
 #'
 #' @description
@@ -9,11 +10,11 @@ NULL
 #' methylation (beta), and stability flag based on likelihood testing.
 #' Also returns per-sample methylation estimates for each segment.
 #'
-#' @param K0 Integer matrix of unmethylated counts.
-#' @param K1 Integer matrix of methylated counts.
+#' @param K0 Integer or numeric matrix of unmethylated counts.
+#' @param K1 Integer or numeric matrix of methylated counts.
 #' @param chr Character vector giving the chromosome for each site.
 #' @param pos Numeric vector giving genomic coordinates for each site.
-#' @param segments Integer vector (length = nrow(K0)) giving segment IDs for each site.
+#' @param segments Integer vector giving segment IDs for each site in K0 and K1.
 #'
 #' @return
 #' A list with two elements:
@@ -34,15 +35,23 @@ NULL
 #' }
 #'
 #' @examples
-#' K0 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
-#' K1 <- matrix(sample(1:200, 125, replace = TRUE), ncol = 5)
+#' set.seed(1234)
+#' K0 <- matrix(
+#'   rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
+#' K1 <- matrix(
+#'   rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
 #' tree <- fuse.cluster(K0, K1)
-#' segments <- fuse.cut.tree(tree, 40)
+#' segments <- fuse.cut.tree(tree, 4)
 #' res <- fuse.summary(K0, K1, rep("chr1", nrow(K0)), 1:nrow(K0), segments)
 #' head(res$summary)
 #' head(res$betas_per_segment)
 #'
 #' @export
+#' @importFrom stats pchisq
 fuse.summary <- function(K0, K1, chr, pos, segments) {
   # --- Input validation ---
   stopifnot(
@@ -57,6 +66,12 @@ fuse.summary <- function(K0, K1, chr, pos, segments) {
     length(segments) == nrow(K0)
   )
 
+  # --- Check colnames consistency ---
+  if (!is.null(colnames(K0)) && !is.null(colnames(K1))) {
+    if (!identical(colnames(K0), colnames(K1))) {
+      stop("Column names of K0 and K1 must match exactly (including order).", call. = FALSE)
+    }
+  }
 
   # --- Initialization ---
   N <- ncol(K0)
@@ -99,7 +114,7 @@ fuse.summary <- function(K0, K1, chr, pos, segments) {
 
   # --- Combine into final summary data frame ---
   summary_df <- data.frame(
-    Segment = as.integer(names(segment_start)),
+    Segment = paste(segment_chr, segment_start, sep = "."),
     Chr = unlist(segment_chr),
     Start = unlist(segment_start),
     End = unlist(segment_end),
@@ -110,6 +125,16 @@ fuse.summary <- function(K0, K1, chr, pos, segments) {
   )
 
   rownames(summary_df) <- NULL
+
+  # --- Ensure betas_per_segment has correct dimnames ---
+  if (!is.null(colnames(K1))) {
+    colnames(phat_seg) <- colnames(K1)
+  } else if (!is.null(colnames(K0))) {
+    colnames(phat_seg) <- colnames(K0)
+  }
+
+  # Give rows the same identifiers as summary_df
+  rownames(phat_seg) <- summary_df$Segment
 
   # --- Return both summary and per-segment betas ---
   return(list(

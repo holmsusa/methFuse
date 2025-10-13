@@ -113,7 +113,7 @@ extern "C" {
 	} \
 	\
 	static \
-	void \
+	void __attribute__((unused)) \
 	_PREFIX ## _sort_heap(_TYPE *x, _SIZE n, _COOKIE_TYPE cookie) \
 	{ \
 		_SIZE t; \

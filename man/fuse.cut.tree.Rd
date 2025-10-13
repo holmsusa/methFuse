@@ -7,7 +7,7 @@
 fuse.cut.tree(tree, k)
 }
 \arguments{
-\item{tree}{Sorted clustering tree}
+\item{tree}{Clustering tree}
 
 \item{k}{Number of clusters}
 }
@@ -27,7 +27,7 @@ tree <- matrix(c(
 4,  3, 106.38879, 454.47029,  1.14473
 ), ncol = 5, byrow = TRUE)
 
-segments <- fuse.cutree(tree, 2)
+segments <- fuse.cut.tree(tree, 2)
 segments
 
 }

@@ -6,7 +6,6 @@ NULL
 #' @description Produces a hierarchical clustering tree based on the input matrices of counts.
 #' @param K0 Integer or numeric matrix with unmethylated counts
 #' @param K1 Integer or numeric matrix with methylated counts
-#' @param sort Default is true, sorts the tree in optimal order
 #'
 #' @return
 #' Clustering tree as a matrix, with the same structure as hclust, including the columns
@@ -20,13 +19,20 @@ NULL
 #'
 #' @examples
 #' # Example: Clustering generated data
-#' K0 <- matrix(sample(c(1:200), 125, replace = TRUE), ncol = 5)
-#' K1 <- matrix(sample(c(1:200), 125, replace = TRUE), ncol = 5)
+#' set.seed(1234)
+#' K0 <- matrix(
+#'   rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
+#' K1 <- matrix(
+#'   rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+#'   nrow = 100, byrow = TRUE
+#' )
 #' tree <- fuse.cluster(K0, K1)
 #' tree
 #'
 #' @export
-fuse.cluster <- function(K0, K1, sort = TRUE) {
+fuse.cluster <- function(K0, K1) {
   # Produces a hierarchical clustering tree based on the input arrays.
   # Input: matrix K0, matrix K1
   # Output: matrix
@@ -56,32 +62,8 @@ fuse.cluster <- function(K0, K1, sort = TRUE) {
 
   # All set, calling the fuse_cluster_R now
   tree <- .Call('fuse_cluster_R', K0, K1, chr.idx, pos)
-
-  if(sort) {
-    tree <- .Call('sort_tree_R', tree)
-
-  }
+  tree <- .Call('sort_tree_R', tree)
 
   return(`colnames<-`(tree, c("m1", "m2", "logl_tot", "logl_merge", "genomic_dist")))
 }
 
-#' Sort Clustering Tree in Optimal Order
-#'
-#' @description Sorts the clustering tree produced by \code{\link{fuse.cluster}}.
-#' @param tree Unsorted clustering tree
-#' @return Sorted tree
-#' @examples
-#' # Example: Sorting unsorted clustering tree
-#' K0 <- matrix(sample(c(1:200), 80, replace = TRUE), ncol = 5)
-#' K1 <- matrix(sample(c(1:200), 80, replace = TRUE), ncol = 5)
-#' tree <- fuse.cluster(K0, K1, sort = FALSE)
-#' tree.sorted <- fuse.sort.tree(tree)
-#' tree
-#'
-#' @export
-fuse.sort.tree <- function(tree) {
-  # Sorts the tree in optimal order, returns
-  # Input: matrix tree
-  # Output: matrix
-  return (.Call('sort_tree_R', tree))
-}
