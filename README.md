@@ -1,24 +1,34 @@
 # fuseR
 
-**fuseR** is an R package that implements FUSE: FUnctional SEgmentation of DNA methylation data through hierarchical clustering.
+
+**fuseR** implements FUSE: **FUnctional SEgmentation of DNA methylation data** through hierarchical clustering.
+
+
+---
 
 ## Features
+
 - Hierarchical clustering based on methylation count matrices
-- Tree sorting for optimal ordering
-- Tree segmentation based on a given number of clusters or information criteria
+- Detection of optimal number of clusters
+- Summarization of segments, including stability flag
+- Per-segment methylation estimates per sample
+
+---
 
 ## Installation
 
 ### From GitHub (Development Version)
 
-To install the latest version of `fuseR` from GitHub:
-
 ```r
-# Install devtools if it's not already installed
+# Install devtools or remotes if needed
 install.packages("devtools")
+# or
+install.packages("remotes")
 
-# Then install fuseR from GitHub
+# Install fuseR from GitHub
 devtools::install_github("holmsusa/fuseR")
+# or
+remotes::install_github("holmsusa/fuseR")
 ```
 
 ## System Requirements
@@ -26,31 +36,42 @@ devtools::install_github("holmsusa/fuseR")
 - C++ toolchain for native code compilation
 
 You may need platform-specific tools: 
+
 - macOS: Xcode Command Line Tools (xcode-select --install)
-- Linux: build-essential, e.g., sudo apt install build-essential
+- Linux: build-essential
 - Windows: Rtools 
 
-## Usage 
+## Quick Example 
 ```r
 library(fuseR)
+set.seed(1234)
 
 # Generate sample data
-K0 <- matrix(sample(1:200, 100, replace = TRUE), ncol = 5)
-K1 <- matrix(sample(1:200, 100, replace = TRUE), ncol = 5)
+K0 <- matrix(
+  rep(c(sample(0:20, 200, replace = TRUE), sample(20:40, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
+K1 <- matrix(
+  rep(c(sample(20:40, 200, replace = TRUE), sample(0:20, 200, replace = TRUE)), 2),
+  nrow = 100, byrow = TRUE
+)
 
-# Perform clustering
-tree <- fuse.cluster(K0, K1)
+# Perform segmentation
+segment_result <- fuse.segment(
+  K0, K1, 
+  chr = sub("\\..*$", "", rownames(K0)), 
+  pos = as.numeric(sub("^.*\\.", "", rownames(K0)))
+)
 
-# Sort tree
-sorted_tree <- fuse.sort.tree(tree)
-
-# Cut tree into 3 clusters
-segments <- fuse.cutree(sorted_tree, 3)
+# Access summary and per-segment betas
+head(segment_result$summary)
+head(segment_result$betas_per_segment)
 ```
-Check out an example workflow in examples/example.md
+
+Check out a **full example workflow** in [example.md](inst/examples/example.md).
 
 ## License
-This package is licensed under the MIT License. See the LICENSE file for details.
+This package is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Author
 Susanna Holmstrom
