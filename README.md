@@ -70,7 +70,8 @@ head(segment_result$summary)
 head(segment_result$betas_per_segment)
 ```
 
-# Check out a **full example workflow** in [example.md](../inst/examples/example.md).
+Check out a **full example workflow** in the [vignette](https://holmsusa.github.io/fuseR/articles/example.html).
+
 
 ## License
 This package is licensed under the MIT License. See [LICENSE](LICENSE) for details.

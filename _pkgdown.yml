@@ -1,4 +1,17 @@
 url: https://holmsusa.github.io/fuseR/
+
 template:
   bootstrap: 5
 
+navbar:
+  structure:
+    left:
+      - home
+      - reference
+      - example
+      - news
+
+  components:
+    example:
+      text: "Example workflow"
+      href: articles/example.html
