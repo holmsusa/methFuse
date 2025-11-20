@@ -131,7 +131,7 @@ betas_df <- data.frame(beta = rowMeans(raw_betas), pos =  as.numeric(sub("^.*\\.
 # Create the plot
 ggplot() +
   geom_segment(
-    data = result$summary[1:10, ],
+    # data = result$summary[1:10, ],
     aes(x = Start, xend = End, y = Beta, yend = Beta, color = Beta > 0.5),
     linewidth = 1.2
   ) +
