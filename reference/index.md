@@ -12,3 +12,5 @@
   : Summarize FUSE Segmentation Results
 - [`number.of.clusters()`](https://holmsusa.github.io/fuseR/reference/number.of.clusters.md)
   : Find Optimal Number of Clusters
+- [`plot(`*`<fuse_summary>`*`)`](https://holmsusa.github.io/fuseR/reference/plot.fuse_summary.md)
+  : Plot method for FUSE segmentation results

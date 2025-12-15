@@ -72,12 +72,12 @@ head(segment_result$summary)
 ```
 
     ##       Segment   Chr Start   End CpGs Length      Beta Coherent
-    ## 1 chr20.60008 chr20 60008 61140   17   1133 0.8378468     TRUE
-    ## 2 chr20.61141 chr20 61141 61817   12    677 0.8450438     TRUE
-    ## 3 chr20.61818 chr20 61818 63862   18   2045 0.8514536     TRUE
-    ## 4 chr20.63863 chr20 63863 64424   13    562 0.8565943     TRUE
-    ## 5 chr20.64609 chr20 64609 64728    6    120 0.6418476     TRUE
-    ## 6 chr20.64778 chr20 64778 65365    6    588 0.1449167     TRUE
+    ## 1 chr20.60008 chr20 60008 61140   17   1133 0.8378468    FALSE
+    ## 2 chr20.61141 chr20 61141 61817   12    677 0.8450438    FALSE
+    ## 3 chr20.61818 chr20 61818 63862   18   2045 0.8514536    FALSE
+    ## 4 chr20.63863 chr20 63863 64424   13    562 0.8565943    FALSE
+    ## 5 chr20.64609 chr20 64609 64728    6    120 0.6418476    FALSE
+    ## 6 chr20.64778 chr20 64778 65365    6    588 0.1449167    FALSE
 
 ``` r
 head(segment_result$betas_per_segment)
@@ -111,6 +111,12 @@ head(segment_result$betas_per_segment)
     ## chr20.63863 0.9120172 0.9628713
     ## chr20.64609 0.6808511 0.6701031
     ## chr20.64778 0.2166667 0.2110092
+
+``` r
+plot(segment_result, segments_to_plot = 1:nrow(segment_result$summary))
+```
+
+![](example_files/figure-html/unnamed-chunk-5-1.png)
 
 ## Apply FUSE through separate steps
 
@@ -191,12 +197,12 @@ head(result$summary)
 ```
 
     ##       Segment   Chr Start   End CpGs Length      Beta Coherent
-    ## 1 chr20.60008 chr20 60008 61140   17   1133 0.8378468     TRUE
-    ## 2 chr20.61141 chr20 61141 61817   12    677 0.8450438     TRUE
-    ## 3 chr20.61818 chr20 61818 63862   18   2045 0.8514536     TRUE
-    ## 4 chr20.63863 chr20 63863 64424   13    562 0.8565943     TRUE
-    ## 5 chr20.64609 chr20 64609 64728    6    120 0.6418476     TRUE
-    ## 6 chr20.64778 chr20 64778 65365    6    588 0.1449167     TRUE
+    ## 1 chr20.60008 chr20 60008 61140   17   1133 0.8378468    FALSE
+    ## 2 chr20.61141 chr20 61141 61817   12    677 0.8450438    FALSE
+    ## 3 chr20.61818 chr20 61818 63862   18   2045 0.8514536    FALSE
+    ## 4 chr20.63863 chr20 63863 64424   13    562 0.8565943    FALSE
+    ## 5 chr20.64609 chr20 64609 64728    6    120 0.6418476    FALSE
+    ## 6 chr20.64778 chr20 64778 65365    6    588 0.1449167    FALSE
 
 ``` r
 head(result$betas_per_segment)
@@ -250,4 +256,9 @@ identical(segment_result$betas_per_segment, result$betas_per_segment)
 ## Plotting
 
 Let’s visualize a small piece of the result:
-![](example_files/figure-html/unnamed-chunk-12-1.png)
+
+``` r
+plot(result, segments_to_plot = 1:50)
+```
+
+![](example_files/figure-html/unnamed-chunk-13-1.png)

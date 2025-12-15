@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fuseR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,9 +33,37 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="fuser-100-2025-12-15">fuseR 1.0.0 (2025-12-15)<a class="anchor" aria-label="anchor" href="#fuser-100-2025-12-15"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
+<ul><li>Added <code><a href="../reference/plot.fuse_summary.html">plot.fuse_summary()</a></code> S3 method for visualization of FUSE segmentation results.</li>
+<li>Segment plots now display:
+<ul><li>Horizontal segment-level methylation estimates</li>
+<li>Per-segment average beta values</li>
+<li>Optional per-CpG methylation values overlaid as background points</li>
+</ul></li>
+<li>Added support for flexible segment selection when plotting (<code>segments_to_plot</code>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-1-0-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-0-0"></a></h3>
+<ul><li>Promoted package to first stable release (<code>1.0.0</code>).</li>
+<li>Improved input validation and error handling across exported functions.</li>
+<li>Improved S3 method registration and namespace imports.</li>
+<li>Improved vignette robustness and reproducibility during package checks.</li>
+<li>Updated documentation to reflect current plotting and summary capabilities.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
+<ul><li>Fixed S3 dispatch issues affecting <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> during vignette building.</li>
+<li>Fixed lazy-load and installation issues caused by partial rebuilds.</li>
+<li>Fixed edge cases in beta computation when counts sum to zero.</li>
+<li>Fixed the swapped TRUE/FALSE labels for coherent segments in <code><a href="../reference/fuse.summary.html">fuse.summary()</a></code>.</li>
+</ul><hr></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9000" id="fuser-0009000-2025-11-20">fuseR 0.0.0.9000 (2025-11-20)<a class="anchor" aria-label="anchor" href="#fuser-0009000-2025-11-20"></a></h2>
-<div class="section level4">
-<h4 id="initial-release-0-0-0-9000">Initial Release<a class="anchor" aria-label="anchor" href="#initial-release-0-0-0-9000"></a></h4>
+<div class="section level3">
+<h3 id="initial-development-release-0-0-0-9000">Initial development release<a class="anchor" aria-label="anchor" href="#initial-development-release-0-0-0-9000"></a></h3>
 <ul><li>Implemented core FUSE pipeline:
 <ul><li><code><a href="../reference/fuse.cluster.html">fuse.cluster()</a></code></li>
 <li><code><a href="../reference/number.of.clusters.html">number.of.clusters()</a></code></li>

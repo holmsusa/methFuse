@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://holmsusa.github.io/fuseR/404.html</loc></url>
 <url><loc>https://holmsusa.github.io/fuseR/LICENSE-text.html</loc></url>
+<url><loc>https://holmsusa.github.io/fuseR/LICENSE.html</loc></url>
 <url><loc>https://holmsusa.github.io/fuseR/articles/example.html</loc></url>
 <url><loc>https://holmsusa.github.io/fuseR/articles/index.html</loc></url>
 <url><loc>https://holmsusa.github.io/fuseR/authors.html</loc></url>
@@ -12,5 +13,6 @@
 <url><loc>https://holmsusa.github.io/fuseR/reference/fuse.summary.html</loc></url>
 <url><loc>https://holmsusa.github.io/fuseR/reference/index.html</loc></url>
 <url><loc>https://holmsusa.github.io/fuseR/reference/number.of.clusters.html</loc></url>
+<url><loc>https://holmsusa.github.io/fuseR/reference/plot.fuse_summary.html</loc></url>
 </urlset>
 
