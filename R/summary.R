@@ -9,6 +9,7 @@ NULL
 #' including genomic coordinates, CpG count, segment length, average
 #' methylation (beta), and stability flag based on likelihood testing.
 #' Also returns per-sample methylation estimates for each segment.
+#' Result can be visualized using plot(result).
 #'
 #' @param K0 Integer or numeric matrix of unmethylated counts.
 #' @param K1 Integer or numeric matrix of methylated counts.
@@ -32,6 +33,8 @@ NULL
 #'     }
 #'   \item{betas_per_segment}{Matrix of per-sample methylation estimates for each segment
 #'   (rows = segments, columns = samples).}
+#'   \item{raw_beta}{Average beta per CpG site, used for plotting.}
+#'   \item{raw_pos}{Genomic position for every given CpG site, used for plotting.}
 #' }
 #'
 #' @examples
@@ -98,7 +101,7 @@ fuse.summary <- function(K0, K1, chr, pos, segments) {
 
   # --- Compute p-values and stability flag (using base R) ---
   pvals <- 1 - pchisq(-2 * (LL1 - LL2), df = df1 - df2)
-  coherent_flag <- pvals < 0.05
+  coherent_flag <- pvals > 0.05
 
   # --- Compute average beta per segment ---
   total_K0 <- rowSums(K0_seg, na.rm = TRUE)
@@ -136,11 +139,91 @@ fuse.summary <- function(K0, K1, chr, pos, segments) {
   # Give rows the same identifiers as summary_df
   rownames(phat_seg) <- summary_df$Segment
 
+  # --- Compute raw betas (per CpG) ---
+  raw_beta <- rowSums(K1) / rowSums(K1 + K0)
+
   # --- Return both summary and per-segment betas ---
-  return(list(
+  out <- list(
     summary = summary_df,
-    betas_per_segment = phat_seg
-  ))
+    betas_per_segment = phat_seg,
+    raw_beta = raw_beta,
+    raw_pos = pos
+  )
+
+  class(out) <- "fuse_summary"
+  return(out)
+
+}
+
+#' Plot method for FUSE segmentation results
+#'
+#' @param x A fuse_summary object
+#' @param ... Additional arguments
+#' @param segments_to_plot Integer vector of segment indices
+#'
+#' @importFrom graphics grid abline points segments
+#' @export
+plot.fuse_summary <- function(x, ..., segments_to_plot = 1:50) {
+
+  # If default
+  if(identical(segments_to_plot, c(1:50))){
+    segments_to_plot <- 1:min(50, nrow(x$summary))
+  }
+
+  if(!(all(segments_to_plot %in% 1:nrow(x$summary)))) {
+    stop("segments_to_plot not in range")
+  }
+
+
+  summary <- x$summary[segments_to_plot, ]
+  betas <- x$betas_per_segment[segments_to_plot, , drop = FALSE]
+
+  betas_df <- data.frame(
+    beta = rowMeans(betas),
+    start = summary$Start,
+    end = summary$End
+  )
+
+  points_to_plot <- 1:sum(summary$CpGs)
+
+  points_df <- data.frame(
+    pos = x$raw_pos[points_to_plot],
+    beta = x$raw_beta[points_to_plot]
+    )
+
+  plot(
+    NA,
+    xlim = range(c(betas_df$start, betas_df$end)),
+    ylim = range(c(0,1)),
+    xlab = "Genomic Position",
+    ylab = "Beta",
+    main = "Segments"
+  )
+
+  grid()
+  abline(h = 0.5, col = "gray50", lty = 2, lwd = 1.5)
+
+  # --- NEW: raw CpG beta points ---
+  points(
+    points_df$pos,
+    points_df$beta,
+    col = "grey",
+    pch = 16
+
+  )
+
+  # Segment lines
+  for (i in seq_len(nrow(summary))) {
+    col <- if (betas_df$beta[i] > 0.5) "red" else "blue"
+    segments(
+      x0 = betas_df$start[i],
+      x1 = betas_df$end[i],
+      y0 = betas_df$beta[i],
+      y1 = betas_df$beta[i],
+      col = col,
+      lwd = 4
+    )
+  }
 }
 
 

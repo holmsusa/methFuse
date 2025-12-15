@@ -13,7 +13,7 @@ test_that("fuse.summary returns correct structure and dimensions", {
 
   # --- Basic structure ---
   expect_type(res, "list")
-  expect_named(res, c("summary", "betas_per_segment"))
+  expect_named(res, c("summary", "betas_per_segment", "raw_beta", "raw_pos"))
 
   # --- Summary structure ---
   sm <- res$summary

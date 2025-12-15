@@ -56,6 +56,10 @@ head(segment_result$summary)
 head(segment_result$betas_per_segment)
 ```
 
+```{r}
+plot(segment_result, segments_to_plot = 1:nrow(segment_result$summary))
+``` 
+
 ## Apply FUSE through separate steps
 If the intermediate outputs of the method are relevant, then the pipeline can also be applied by calling each of the functions 'fuse.cluster()', 'number.of.clusters()', 'fuse.cut.tree()', and 'fuse.summary()' separately. 
 
@@ -121,37 +125,6 @@ identical(segment_result$betas_per_segment, result$betas_per_segment)
 
 ## Plotting
 Let's visualize a small piece of the result:
-```{r, echo = FALSE,  fig.width=12, fig.height=3}
-library(ggplot2)
-
-# Only plotting 20 first segments
-raw_betas <- K1[which(segments %in% c(1:10)), ]  / (K1[which(segments %in% c(1:10)), ]  + K0[which(segments %in% c(1:10)), ])
-
-# Division by 0 will be full noise, beta = 0.5
-raw_betas[] <- lapply(raw_betas, function(x) {
-  x[is.infinite(x)] <- 0.5
-  x
-})
-
-# Average over samples for plotting
-betas_df <- data.frame(beta = rowMeans(raw_betas), pos =  as.numeric(sub("^.*\\.", "", rownames(raw_betas))))
-
-# Create the plot
-ggplot() +
-  geom_segment(
-    data = result$summary[1:10, ],
-    aes(x = Start, xend = End, y = Beta, yend = Beta, color = Beta > 0.5),
-    linewidth = 1.2
-  ) +
-  geom_point(
-    data = betas_df,
-    aes(x = pos, y = beta),
-    color = "black",
-    size = 2
-  ) +
-  scale_color_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
-  labs(x = "Genomic Position", y = "Beta", title = "Segments") +
-  theme_minimal()
-
-
+```{r, fig.width=12, fig.height=3}
+plot(result, segments_to_plot = 1:50)
 ```

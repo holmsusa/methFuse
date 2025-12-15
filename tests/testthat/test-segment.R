@@ -14,7 +14,7 @@ test_that("fuse.segment runs end-to-end and returns valid structure", {
   res <- fuse.segment(K0, K1, chr, pos, method = "AIC")
 
   expect_type(res, "list")
-  expect_named(res, c("summary", "betas_per_segment"))
+  expect_named(res, c("summary", "betas_per_segment", "raw_beta", "raw_pos"))
   expect_true(is.data.frame(res$summary))
   expect_true(is.matrix(res$betas_per_segment))
   expect_true(!is.null(attr(res, "k_opt")))

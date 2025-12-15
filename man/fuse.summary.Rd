@@ -29,10 +29,12 @@ A list with two elements:
 \item{CpGs}{Number of CpGs in the segment}
 \item{Length}{Genomic length (End - Start + 1)}
 \item{Beta}{Average methylation across samples and CpGs}
-\item{Stable}{Logical indicator (TRUE if segment is stable, else FALSE)}
+\item{Coherent}{Logical indicator (TRUE if segment is coherently methylated, else FALSE)}
 }
 \item{betas_per_segment}{Matrix of per-sample methylation estimates for each segment
 (rows = segments, columns = samples).}
+\item{raw_beta}{Average beta per CpG site, used for plotting.}
+\item{raw_pos}{Genomic position for every given CpG site, used for plotting.}
 }
 }
 \description{
@@ -40,6 +42,7 @@ Summarizes FUSE segmentation results into one row per segment,
 including genomic coordinates, CpG count, segment length, average
 methylation (beta), and stability flag based on likelihood testing.
 Also returns per-sample methylation estimates for each segment.
+Result can be visualized using plot(result).
 }
 \examples{
 set.seed(1234)
