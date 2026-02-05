@@ -34,7 +34,8 @@ plot.fuse_summary <- function(x, ..., segments_to_plot = 1:50) {
     end = summary$End
   )
 
-  points_to_plot <- 1:sum(summary$CpGs)
+  # Indices of points to plot
+  points_to_plot <- sum(x$summary$CpGs[1:(rev(segments_to_plot)[1]-1)]):sum(summary$CpGs)
 
   points_df <- data.frame(
     pos = x$raw_pos[points_to_plot],
