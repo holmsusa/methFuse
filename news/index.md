@@ -1,5 +1,31 @@
 # Changelog
 
+## fuseR 1.1.0 (2026-02-06)
+
+### New features
+
+- Added
+  [`fuse.cluster()`](https://holmsusa.github.io/fuseR/reference/fuse.cluster.md)
+  support for `BSseq` and `methrix` objects
+- Added
+  [`fuse.segment()`](https://holmsusa.github.io/fuseR/reference/fuse.segment.md)
+  support for `BSseq` and `methrix` objects
+- Unified S3 API: `fuse.cluster(K0, K1)` and `fuse.segment(K0, K1)` now
+  supported
+
+### Improvements
+
+- Improved internal argument normalization for matrix inputs
+- Expanded test coverage for Bioconductor classes
+
+### Bug fixes
+
+- Fixed incorrect handling of positional `K1` arguments in S3 methods
+- Fixed bug in plotting
+- Now works in Windows OS
+
+------------------------------------------------------------------------
+
 ## fuseR 1.0.0 (2025-12-15)
 
 ### New features
