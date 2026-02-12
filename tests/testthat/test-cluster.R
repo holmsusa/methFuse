@@ -1,22 +1,22 @@
 expect_valid_fuse_tree <- function(tree, n_sites) {
-  expect_true(is.matrix(tree))
-  expect_equal(ncol(tree), 5)
+  expect_true(class(tree) == "hclust")
+  expect_equal(length(tree), 7)
   expect_equal(
-    colnames(tree),
-    c("m1", "m2", "logl_tot", "logl_merge", "genomic_dist")
+    names(tree),
+    c("merge", "height", "order", "labels", "call", "method", "dist.method")
   )
 
   # hclust-style tree: n_sites - 1 merges
-  expect_equal(nrow(tree), n_sites - 1)
+  expect_equal(nrow(tree$merge), n_sites - 1)
 
   # Merge indices should be integers
-  expect_true(is.numeric(tree[, "m1"]))
-  expect_true(is.numeric(tree[, "m2"]))
+  expect_true(is.numeric(tree$merge[, 1]))
+  expect_true(is.numeric(tree$merge[, 2]))
 }
 
 
 # fuse.cluster
-test_that("fuse.cluster returns matrix with correct column names", {
+test_that("fuse.cluster returns hclust with correct names", {
   K0 <- matrix(sample(1:100, 50, replace = TRUE), ncol = 5)
   K1 <- matrix(sample(1:100, 50, replace = TRUE), ncol = 5)
 
@@ -25,11 +25,11 @@ test_that("fuse.cluster returns matrix with correct column names", {
 
   result <- fuse.cluster(K0, K1, chr, pos)
 
-  expect_true(is.matrix(result))
-  expect_equal(ncol(result), 5)
+  expect_true(class(result) == "hclust")
+  expect_equal(length(result), 7)
   expect_equal(
-    colnames(result),
-    c("m1", "m2", "logl_tot", "logl_merge", "genomic_dist")
+    names(result),
+    c("merge", "height", "order", "labels", "call", "method", "dist.method")
   )
 })
 
@@ -75,7 +75,7 @@ test_that("fuse.cluster is consistent between matrix and BSseq input", {
 
   skip_if_not_installed("bsseq")
 
-  library(bsseq)
+  library(bsseq, quietly = TRUE)
 
   set.seed(42)
   M <- matrix(sample(0:10, 200, TRUE), nrow = 50)
@@ -108,7 +108,7 @@ test_that("fuse.cluster respects chromosome boundaries", {
 
   skip_if_not_installed("bsseq")
 
-  library(bsseq)
+  library(bsseq, quietly = TRUE)
 
   set.seed(1)
   M <- matrix(sample(0:10, 200, TRUE), nrow = 50)
@@ -132,8 +132,8 @@ test_that("fuse.cluster respects chromosome boundaries", {
   chr2_idx <- which(chr == "chr2")
 
   expect_true(
-    any(abs(tree[, "m1"]) %in% chr2_idx) ||
-      any(abs(tree[, "m2"]) %in% chr2_idx)
+    any(abs(tree$merge[, 1]) %in% chr2_idx) ||
+      any(abs(tree$merge[, 2]) %in% chr2_idx)
   )
 })
 

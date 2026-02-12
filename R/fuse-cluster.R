@@ -7,22 +7,10 @@
 #'   \item{BSseq}{A \code{BSseq} object.}
 #'   \item{methrix}{A \code{methrix} object.}
 #' }
-#' @param ... K1 Integer or numeric matrix with methylated counts
-#' #' @param ... Additional arguments depending on input type:
-#' \describe{
-#'   \item{K1}{Methylated count matrix (required if \code{x} is a matrix).}
-#'   \item{chr}{(Optinal) Chromosome labels, one per CpG (matrix input only).}
-#'   \item{pos}{(Optional) positions, one per CpG (matrix input only).}
-#' }
+#' @param ... Additional arguments if K0 is a matrix.
 #'
 #' @return
-#' Clustering tree as a matrix, with the same structure as hclust, including the columns
-#' \describe{
-#'   \item{m1}{ID of first data point. <0 is original point, >0 is row of previous merge.}
-#'   \item{m2}{ID of second data point. <0 is original point, >0 is row of previous merge.}
-#'   \item{logl_tot}{Change in total log-likelihood of merge.}
-#'   \item{logl_merge}{Total cost of points in this merge.}
-#'   \item{genomic_dist}{Penalty for genomic distance between points.}
+#' A clustering tree of class \code{hclust}.
 #' }
 #'
 #' @examples
@@ -61,9 +49,12 @@ fuse.cluster <- function(x, ...) {
 fuse.cluster.default <- function(x, K1, chr = NULL, pos = NULL, ...) {
   # Produces a hierarchical clustering tree based on the input arrays.
   # Input: matrix K0, matrix K1
-  # Output: matrix
+  # Output: hclust
 
   K0 <- x
+
+  if(!nrow(K0) >= 2)
+    stop("Input must have at least 2 sites.")
 
   # Checking input
   if(!all((is.matrix(K0) || methods::is(K0, "DelayedArray")),
@@ -83,6 +74,8 @@ fuse.cluster.default <- function(x, K1, chr = NULL, pos = NULL, ...) {
     # Otherwise "one" chromosome and 1,2,3,... positions
     chr.idx <- rep(1L, nrow(K0))
     pos <- seq_len(nrow(K0))
+
+    chr <- chr.idx # Used for the labels later
   }
 
   if(!all(is.integer(chr.idx),
@@ -95,7 +88,19 @@ fuse.cluster.default <- function(x, K1, chr = NULL, pos = NULL, ...) {
   tree <- .Call('fuse_cluster_R', K0, K1, chr.idx, pos)
   tree <- .Call('sort_tree_R', tree)
 
-  return(`colnames<-`(tree, c("m1", "m2", "logl_tot", "logl_merge", "genomic_dist")))
+  res <- list(
+    merge = tree[, 1:2],
+    height = cumsum(tree[, 3]),
+    order = seq_len(nrow(tree)+1),
+    labels = paste(chr, pos, sep = "."),
+    call = "fuse.cluster(k0, k1, pos, chr)",
+    method = "fuse",
+    dist.method = "fuse"
+  )
+
+  attr(res, "class") = "hclust"
+
+  return(res)
 }
 
 

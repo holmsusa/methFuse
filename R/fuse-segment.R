@@ -93,7 +93,6 @@ fuse.segment.default <- function(x, K1, chr, pos, method = c("BIC", "AIC"), ...)
     K1_block <- block$K1
 
     tree <- fuse.cluster(K0_block, K1_block, chr[block$idx], pos[block$idx])
-    tree[, 3] <- cumsum(tree[, 3])
     k_opt <- number.of.clusters(tree, ncol(K0_block), method)
     segments <- fuse.cut.tree(tree, k_opt)
 

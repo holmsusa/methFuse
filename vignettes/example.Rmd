@@ -107,36 +107,37 @@ head(res$summary)
 If the intermediate outputs of the method are relevant, then the pipeline can also be applied by calling each of the functions 'fuse.cluster()', 'number.of.clusters()', 'fuse.cut.tree()', and 'fuse.summary()' separately. 
 
 ### 1. Cluster
-In the first step, 'fuse.cluster()' is applied on the count matrices. This performs a hierarchical clustering of closest neighbors, and outputs a clustering tree.
+In the first step, 'fuse.cluster()' is applied on the count matrices. This performs a hierarchical clustering of closest neighbors, and outputs a clustering tree of class \code{hclust}.
 
 ```{r}
 tree <- fuse.cluster(as.matrix(K0), 
                      as.matrix(K1),
                      chr = sub("\\..*$", "", rownames(K0)), 
                      pos = as.integer(sub("^.*\\.", "", rownames(K0))))
-head(tree)
+names(tree)
+head(tree$merge)
+head(tree$height)
 ```
 
-The clustering 'tree' contains the following columns:
+The clustering tree contains the following elements:
 
-- 'm1': the label of the first merged point
-- 'm2': the label of the second merged point
-- 'logl_tot': Change in total log-likelihood for forming this merge
-- 'logl_merge': Total cost of the points in this formed cluster
-- 'genomic_dist': Distance penalty for this merge
+- 'merge': the labels of the merged points
+- 'height': The total log-likelihood for forming this merge
+- 'order': Same order as original, since clustering is done in 1D
+- 'labels': Labels of form \code{chr.pos}
+- 'call': \code{fuse.cluster(K0, K1)}
+- 'method': \code{fuse}
+- 'dist.method': \code{fuse}
 
 ### 2. Cutting the tree
 In order to cut the clustering tree, the optimal number of segments needs to be calculated. For this we have the function 'number.of.clusters()', which performs model selection by minimizing either the Bayesian Information Criterion (BIC, default), or the Akaike Information Criterion (AIC).
 
 ```{r}
-# Need the total likelihood per model, which is sum of likelihood changes
-tree[,3] <- cumsum(tree[,3])
-
 optimal_num_of_segments <- number.of.clusters(tree, ncol(K0), 'BIC')
 optimal_num_of_segments
 ```
 
-The tree can then be cut using 'fuse.cut.tree()'
+The tree can then be cut using 'fuse.cut.tree()', (or 'cutree' from package \code{stats}).
 
 ```{r}
 segments <- fuse.cut.tree(tree, optimal_num_of_segments)

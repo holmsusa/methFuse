@@ -23,13 +23,7 @@ fuse.cluster(x, ...)
 \item{methrix}{A \code{methrix} object.}
 }}
 
-\item{...}{K1 Integer or numeric matrix with methylated counts
-#' @param ... Additional arguments depending on input type:
-\describe{
-\item{K1}{Methylated count matrix (required if \code{x} is a matrix).}
-\item{chr}{(Optinal) Chromosome labels, one per CpG (matrix input only).}
-\item{pos}{(Optional) positions, one per CpG (matrix input only).}
-}}
+\item{...}{Additional arguments if K0 is a matrix.}
 
 \item{K1}{Methylated count matrix}
 
@@ -38,13 +32,7 @@ fuse.cluster(x, ...)
 \item{pos}{Optional position vector}
 }
 \value{
-Clustering tree as a matrix, with the same structure as hclust, including the columns
-\describe{
-\item{m1}{ID of first data point. <0 is original point, >0 is row of previous merge.}
-\item{m2}{ID of second data point. <0 is original point, >0 is row of previous merge.}
-\item{logl_tot}{Change in total log-likelihood of merge.}
-\item{logl_merge}{Total cost of points in this merge.}
-\item{genomic_dist}{Penalty for genomic distance between points.}
+A clustering tree of class \code{hclust}.
 }
 }
 \description{

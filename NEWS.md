@@ -4,6 +4,7 @@
 - Added `fuse.cluster()` support for `BSseq` and `methrix` objects
 - Added `fuse.segment()` support for `BSseq` and `methrix` objects
 - Unified S3 API: `fuse.cluster(K0, K1)` and `fuse.segment(K0, K1)` now supported
+- `fuse.cluster()` now returns \code{hclust} object, compatible with other packages
 
 ## Improvements
 - Improved internal argument normalization for matrix inputs
