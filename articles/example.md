@@ -183,7 +183,7 @@ pipeline can also be applied by calling each of the functions
 
 In the first step, ‘fuse.cluster()’ is applied on the count matrices.
 This performs a hierarchical clustering of closest neighbors, and
-outputs a clustering tree of class .
+outputs a clustering tree of class ‘hclust’.
 
 ``` r
 tree <- fuse.cluster(as.matrix(K0), 
@@ -219,10 +219,10 @@ The clustering tree contains the following elements:
 - ‘merge’: the labels of the merged points
 - ‘height’: The total log-likelihood for forming this merge
 - ‘order’: Same order as original, since clustering is done in 1D
-- ‘labels’: Labels of form
-- ‘call’:
-- ‘method’:
-- ‘dist.method’:
+- ‘labels’: Labels of form ‘chr.pos’
+- ‘call’: ‘fuse.cluster(K0, K1)’
+- ‘method’: ‘fuse’
+- ‘dist.method’: ‘fuse’
 
 ### 2. Cutting the tree
 
@@ -240,7 +240,7 @@ optimal_num_of_segments
     ## [1] 9030
 
 The tree can then be cut using ‘fuse.cut.tree()’, (or ‘cutree’ from
-package ).
+package ‘stats’).
 
 ``` r
 segments <- fuse.cut.tree(tree, optimal_num_of_segments)

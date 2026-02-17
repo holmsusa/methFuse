@@ -229,7 +229,7 @@ pipeline can also be applied by calling each of the functions
 </h3>
 <p>In the first step, ‘fuse.cluster()’ is applied on the count matrices.
 This performs a hierarchical clustering of closest neighbors, and
-outputs a clustering tree of class .</p>
+outputs a clustering tree of class ‘hclust’.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fuse.cluster.html">fuse.cluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">K0</span><span class="op">)</span>, </span>
 <span>                     <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">K1</span><span class="op">)</span>,</span>
@@ -255,10 +255,10 @@ outputs a clustering tree of class .</p>
 <li>‘merge’: the labels of the merged points</li>
 <li>‘height’: The total log-likelihood for forming this merge</li>
 <li>‘order’: Same order as original, since clustering is done in 1D</li>
-<li>‘labels’: Labels of form </li>
-<li>‘call’: </li>
-<li>‘method’: </li>
-<li>‘dist.method’: </li>
+<li>‘labels’: Labels of form ‘chr.pos’</li>
+<li>‘call’: ‘fuse.cluster(K0, K1)’</li>
+<li>‘method’: ‘fuse’</li>
+<li>‘dist.method’: ‘fuse’</li>
 </ul>
 </div>
 <div class="section level3">
@@ -274,7 +274,7 @@ Information Criterion (AIC).</p>
 <span><span class="va">optimal_num_of_segments</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 9030</span></span></code></pre>
 <p>The tree can then be cut using ‘fuse.cut.tree()’, (or ‘cutree’ from
-package ).</p>
+package ‘stats’).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">segments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fuse.cut.tree.html">fuse.cut.tree</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">optimal_num_of_segments</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">segments</span>, <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
