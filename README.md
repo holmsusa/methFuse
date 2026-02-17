@@ -67,7 +67,7 @@ You may need platform-specific tools:
   
 Install needed packages with 
 ```r
-BiocManager::install(c("bsseq", "methrix". "DelayedArray"))
+BiocManager::install(c("bsseq", "methrix", "DelayedArray"))
 ```
 
 
