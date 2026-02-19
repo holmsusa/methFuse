@@ -25,15 +25,14 @@ fuse.cluster(x, ...)
 
 \item{...}{Additional arguments if K0 is a matrix.}
 
-\item{K1}{Methylated count matrix}
+\item{K1}{Methylated count matrix (if x is matrix).}
 
-\item{chr}{Optional chromosome vector}
+\item{chr}{Chromosome labels (if x is matrix).}
 
-\item{pos}{Optional position vector}
+\item{pos}{Genomic positions (if x is matrix.}
 }
 \value{
 A clustering tree of class \code{hclust}.
-}
 }
 \description{
 Produces a hierarchical clustering tree based on the input matrices of counts.

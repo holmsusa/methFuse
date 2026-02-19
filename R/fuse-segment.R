@@ -20,14 +20,10 @@
 #'   \item{methrix}{A \code{methrix} object.}
 #' }
 #'
-#' @param ... Additional arguments depending on input type:
-#' \describe{
-#'   \item{K1}{Methylated count matrix (required if \code{x} is a matrix).}
-#'   \item{chr}{Chromosome labels, one per CpG (matrix input only).}
-#'   \item{pos}{Genomic positions, one per CpG (matrix input only).}
-#'   \item{method}{Information criterion for model selection:
-#'     \code{"BIC"} (default) or \code{"AIC"}.}
-#' }
+#' @param ... Additional arguments (matrix input only)
+#'
+#' @param method Information criterion for model selection:
+#'   \code{"BIC"} (default) or \code{"AIC"}.
 #'
 #' For internal use, `x` corresponds to the unmethylated count matrix (`K0`).
 #'
@@ -71,10 +67,9 @@ fuse.segment <- function(x, ...) {
 
 
 #' @rdname fuse.segment
-#' @param K1 Methylated count matrix (required if \code{x} is a matrix)
-#' @param chr Chromosome labels, one per CpG (matrix input only)
-#' @param pos Genomic positions, one per CpG (matrix input only)
-#' @param method Information criterion for model selection: "BIC" (default) or "AIC"
+#' @param K1 Methylated count matrix (if x is matrix).
+#' @param chr Chromosome labels (if x is matrix).
+#' @param pos Genomic positions (if x is matrix.
 #' @export
 fuse.segment.default <- function(x, K1, chr, pos, method = c("BIC", "AIC"), ...) {
   blocks <- .materialize_by_chr(x, K1, chr)

@@ -23,24 +23,18 @@ fuse.segment(x, ...)
 \item{methrix}{A \code{methrix} object.}
 }}
 
-\item{...}{Additional arguments depending on input type:
-\describe{
-\item{K1}{Methylated count matrix (required if \code{x} is a matrix).}
-\item{chr}{Chromosome labels, one per CpG (matrix input only).}
-\item{pos}{Genomic positions, one per CpG (matrix input only).}
+\item{...}{Additional arguments (matrix input only)}
+
+\item{K1}{Methylated count matrix (if x is matrix).}
+
+\item{chr}{Chromosome labels (if x is matrix).}
+
+\item{pos}{Genomic positions (if x is matrix.}
+
 \item{method}{Information criterion for model selection:
-\code{"BIC"} (default) or \code{"AIC"}.}
-}
+\code{"BIC"} (default) or \code{"AIC"}.
 
 For internal use, \code{x} corresponds to the unmethylated count matrix (\code{K0}).}
-
-\item{K1}{Methylated count matrix (required if \code{x} is a matrix)}
-
-\item{chr}{Chromosome labels, one per CpG (matrix input only)}
-
-\item{pos}{Genomic positions, one per CpG (matrix input only)}
-
-\item{method}{Information criterion for model selection: "BIC" (default) or "AIC"}
 }
 \value{
 An object of class \code{fuse_summary}, containing:

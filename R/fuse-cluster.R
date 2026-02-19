@@ -11,7 +11,6 @@
 #'
 #' @return
 #' A clustering tree of class \code{hclust}.
-#' }
 #'
 #' @examples
 #' # Example: Clustering generated data
@@ -42,9 +41,9 @@ fuse.cluster <- function(x, ...) {
 
 
 #' @rdname fuse.cluster
-#' @param K1 Methylated count matrix
-#' @param chr Optional chromosome vector
-#' @param pos Optional position vector
+#' @param K1 Methylated count matrix (if x is matrix).
+#' @param chr Chromosome labels (if x is matrix).
+#' @param pos Genomic positions (if x is matrix.
 #' @export
 fuse.cluster.default <- function(x, K1, chr = NULL, pos = NULL, ...) {
   # Produces a hierarchical clustering tree based on the input arrays.

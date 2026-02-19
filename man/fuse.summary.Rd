@@ -18,18 +18,18 @@ fuse.summary(K0, K1, chr, pos, segments)
 \item{segments}{Integer vector giving segment IDs for each site in K0 and K1.}
 }
 \value{
-A list with two elements:
+A list with four elements:
 \describe{
-\item{summary}{A data frame with one row per segment and columns:}
-\describe{
-\item{Segment}{Segment ID}
-\item{Chr}{Chromosome}
-\item{Start}{Start genomic coordinate}
-\item{End}{End genomic coordinate}
-\item{CpGs}{Number of CpGs in the segment}
-\item{Length}{Genomic length (End - Start + 1)}
-\item{Beta}{Average methylation across samples and CpGs}
-\item{Coherent}{Logical indicator (TRUE if segment is coherently methylated, else FALSE)}
+\item{summary}{A data frame with one row per segment and the following columns:}
+\itemize{
+\item{Segment: Segment ID}
+\item{Chr: Chromosome}
+\item{Start: Start genomic coordinate}
+\item{End: End genomic coordinate}
+\item{CpGs: Number of CpGs in the segment}
+\item{Length: Genomic length (End - Start + 1)}
+\item{Beta: Average methylation across samples and CpGs}
+\item{Coherent: Logical indicator (TRUE if segment is coherently methylated, else FALSE)}
 }
 \item{betas_per_segment}{Matrix of per-sample methylation estimates for each segment
 (rows = segments, columns = samples).}
