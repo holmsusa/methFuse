@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(fuseR)
+library(methFuse)
 
-test_check("fuseR")
+test_check("methFuse")

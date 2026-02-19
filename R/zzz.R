@@ -1,2 +1,2 @@
-#' @useDynLib fuseR, .registration = TRUE
+#' @useDynLib methFuse, .registration = TRUE
 NULL

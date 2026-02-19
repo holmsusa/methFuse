@@ -1,9 +1,8 @@
 Package: methFuse
 Title: Functional Segmentation of the Methylome
 Version: 1.1.0
-Authors@R: 
-    person("Susanna", "Holmström", , "susanna.k.holmstrom@helsinki.fi", role = c("aut", "cre"),
-           comment = c(ORCID = "0009-0005-7542-5913"))
+Authors@R: person("Susanna", "Holmström", email = "susanna.k.holmstrom@helsinki.fi", role = c("aut", "cre"),
+                  comment = c(ORCID = "0009-0005-7542-5913"))
 Description: methFuse finds functional segments in whole-genome bisulfite sequencing data through hierarchical clustering.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -26,3 +25,4 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://holmsusa.github.io/methFuse/
+
