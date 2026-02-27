@@ -114,12 +114,16 @@ head(segment_result$betas_per_segment)
     ## chr20.64778 0.2166667 0.2110092
 
 ``` r
-par(mfrow = c(2,1) )
 plot(segment_result, segments_to_plot = 1:nrow(segment_result$summary))
-plot(segment_result, segments_to_plot = 50:60)
 ```
 
 ![](example_files/figure-html/unnamed-chunk-5-1.png)
+
+``` r
+plot(segment_result, segments_to_plot = 50:60)
+```
+
+![](example_files/figure-html/unnamed-chunk-5-2.png)
 
 ## Using BSseq or methrix
 

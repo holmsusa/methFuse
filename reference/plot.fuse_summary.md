@@ -23,6 +23,10 @@ plot(x, ..., segments_to_plot = 1:50)
 
   Integer vector of segment indices
 
+## Value
+
+No return value, called for side effects.
+
 ## Details
 
 Raw CpG-level methylation values are shown as grey points. Segment-level

@@ -5,6 +5,8 @@
 - **Susanna Holmström**. Author, maintainer.
   [](https://orcid.org/0009-0005-7542-5913)
 
+- **Antti Hakkinen**. Contributor, copyright holder.
+
 ## Citation
 
 Holmström S (2026). *methFuse: Functional Segmentation of the
