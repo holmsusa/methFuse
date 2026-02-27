@@ -60,7 +60,6 @@ head(segment_result$betas_per_segment)
 ```
 
 ```{r, fig.height=10, fig.width=8}
-par(mfrow = c(2,1) )
 plot(segment_result, segments_to_plot = 1:nrow(segment_result$summary))
 plot(segment_result, segments_to_plot = 50:60)
 ``` 

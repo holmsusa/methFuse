@@ -12,6 +12,9 @@
 #' @param ... Additional arguments
 #' @param segments_to_plot Integer vector of segment indices
 #'
+#' @return
+#' No return value, called for side effects.
+#'
 #' @export
 plot.fuse_summary <- function(x, ..., segments_to_plot = 1:50) {
 

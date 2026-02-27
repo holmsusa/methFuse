@@ -1,9 +1,20 @@
 Package: methFuse
 Title: Functional Segmentation of the Methylome
 Version: 1.1.0
-Authors@R: person("Susanna", "Holmström", email = "susanna.k.holmstrom@helsinki.fi", role = c("aut", "cre"),
-                  comment = c(ORCID = "0009-0005-7542-5913"))
-Description: Finds functional segments in whole-genome bisulfite sequencing data through hierarchical clustering.
+Authors@R: c(
+    person("Susanna", "Holmström", email = "susanna.k.holmstrom@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0009-0005-7542-5913")),
+    person("Antti", "Hakkinen", role = c("ctb", "cph")))
+Description: Implements FUSE (Functional Segmentation of DNA methylation data), a data-driven method 
+    for identifying spatially coherent DNA methylation segments from 
+    whole-genome bisulfite sequencing (WGBS) count data. The method performs 
+    hierarchical clustering of CpG sites based on methylated and unmethylated 
+    read counts across multiple samples and determines the optimal number of 
+    segments using an information criterion (AIC or BIC). Resulting segments 
+    represent regions with homogeneous methylation profiles across the input 
+    cohort while allowing sample-specific methylation levels. The package 
+    provides functions for clustering, model selection, tree cutting, 
+    segment-level summarization, and visualization. Input can be supplied as 
+    count matrices or extracted directly from 'BSseq' and 'methrix' objects.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

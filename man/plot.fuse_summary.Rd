@@ -13,6 +13,9 @@
 
 \item{segments_to_plot}{Integer vector of segment indices}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Plotting method for fuse_summary.
 }
